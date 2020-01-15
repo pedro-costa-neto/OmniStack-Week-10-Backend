@@ -62,6 +62,20 @@ module.exports = {
     },
 
     async destroy(request, response){
+        const { id } = request.params 
+        await Dev.deleteOne({ _id: id })
+        let dev = await Dev.findOne({ _id: id })
+        
+        if(dev){
+            dev = {
+                "message" : "Ocorreu um erro ao exluir!"
+            }
+        }else{
+            dev = {
+                "message" : "Excluido com sucesso!"
+            }
+        }
 
+        return response.json(dev)
     },
 }
