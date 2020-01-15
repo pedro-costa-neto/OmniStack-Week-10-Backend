@@ -7,12 +7,21 @@ module.exports = {
         // Filtro por tecnologia
         const { latitude, longitude, techs } = request.query
         const techsArray = parseStringAsArray(techs)
-        const dev = await Dev.find({
+        const devs = await Dev.find({
             techs:{
                 $in: techsArray,
             },
+            location:{
+                $near:{
+                    $geometry:{
+                        type: 'Point',
+                        coordinates: [longitude, latitude],
+                    },
+                    $maxDistance: 10000,
+                },
+            },
         })
 
-        return response.json({devs:[]})
+        return response.json({devs})
     }
 }
