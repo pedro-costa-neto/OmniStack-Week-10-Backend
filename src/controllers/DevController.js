@@ -39,5 +39,29 @@ module.exports = {
         
     
         return response.json(dev)
-    }
+    },
+
+    async update(request, response){
+        const { bio, techs, latitude, longitude } = request.body
+        const { id } = request.params 
+        const techsArray = parseStringAsArray(techs)
+        const location = {
+            type: "Point",
+            coordinates: [longitude, latitude]
+        }
+
+        await Dev.updateOne({_id: id}, {
+            bio,
+            location,
+            techs: techsArray,
+        })
+
+        const dev = await Dev.findOne({_id: id})
+
+        return response.json(dev)
+    },
+
+    async destroy(request, response){
+
+    },
 }
