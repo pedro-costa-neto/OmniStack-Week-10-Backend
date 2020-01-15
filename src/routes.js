@@ -1,5 +1,6 @@
 const { Router } = require('express')
-const axios = require('axios')
+const DevController = require('./controllers/DevController')
+const SearchController = require('./controllers/SearchController')
 
 const routes = Router()
 
@@ -10,13 +11,14 @@ const routes = Router()
 // Route Params: request.params (Identificar um recurso na alteração ou remoção) 
 // Body: request.body (Dados para criação ou alteração de um registro)
 
-routes.post('/devs', async (request, response) => {
-    const { github_username } = request.body
+// Index: Mostrar uma lista 
+// Show: Mostrar um unico registro
+// Store: Criar registro
+// Update: Atualizar registro
+// Destroy: Excluir registro
 
-    const apiResponse = await axios.get(`https://api.github.com/users/${github_username}`)
-
-    console.log(apiResponse.data)
-    return response.json({ message: 'Teste' })
-})
+routes.post('/devs', DevController.store)
+routes.get('/devs', DevController.index)
+routes.get('/search', SearchController.index)
 
 module.exports = routes
